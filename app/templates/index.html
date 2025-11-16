@@ -8,9 +8,35 @@
 <body>
     <div id="app">
         <h1>Smart Combinador Mega Sena</h1>
-        <p>[[ message ]]</p>
-        <button @click="testarVue">Clique aqui para testar Vue</button>
-        <div>[[ resultado ]]</div>
+        <label>Digite as dezenas (separadas por espaço ou vírgula):</label>
+        <input v-model="dezenasStr" type="text" placeholder="Ex: 01 09 12 18 35 44"/>
+        <br><br>
+
+        <div>
+            <h3>Selecione os Indicadores:</h3>
+            {% raw %}
+            <div v-for="ind in indicadoresDisponiveis" :key="ind.valor">
+                <label>
+                    <input type="checkbox" v-model="indicadoresSelecionados" :value="ind.valor">
+                    {{ ind.label }}
+                </label>
+            </div>
+            {% endraw %}
+        </div>
+        <br>
+        <button @click="testarIndicadores">Testar indicadores</button>
+        <br><br>
+
+        {% raw %}
+        <div v-if="Object.keys(resultadoIndicadores).length > 0">
+            <h3>Resultados dos Indicadores:</h3>
+            <ul>
+                <li v-for="(res, nome) in resultadoIndicadores" :key="nome">
+                    <b>{{ nome }}</b>: {{ res }}
+                </li>
+            </ul>
+        </div>
+        {% endraw %}
     </div>
     <!-- Vue.js via CDN -->
     <script src="https://unpkg.com/vue@3"></script>
