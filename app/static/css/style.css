@@ -1,0 +1,19 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f7f7f7;
+  margin: 0;
+  padding: 0;
+}
+#app {
+  background: #fff;
+  margin: 30px auto;
+  max-width: 500px;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px #ccc;
+}
+button {
+  margin: 10px 0;
+  padding: 8px 18px;
+  font-size: 16px;
+}
