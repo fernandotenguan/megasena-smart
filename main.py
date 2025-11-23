@@ -184,9 +184,26 @@ def verificar_match(chave, valor, gabarito):
 # 4. ROTA DO TESTE PREDITIVO (CORRIGIDO)
 @app.route('/teste-preditivo')
 def teste_preditivo():
+    # Só executa o processamento pesado se o formulário for submetido com process=1
+    process = request.args.get('process', default=0, type=int)
+
+    if process != 1:
+        # Renderiza a página com o formulário; o usuário clicará em "Processar" para executar
+        # Valores padrão mostrados no formulário
+        defaults = {
+            'qtd': 100,
+            'z': 2.0,
+            's1': 12, 'p1': 20,
+            's2': 11, 'p2': 30,
+            's3': 10, 'p3': 30,
+            's4': 9,  'p4': 20,
+            'pressao': 60
+        }
+        return render_template('teste_preditivo.html', defaults=defaults)
+
     start_time = time.time()
-    
-    # --- Inputs ---
+
+    # --- Inputs (quando process==1) ---
     qtd_jogos = request.args.get('qtd', default=100, type=int)
     try:
         s1, p1 = int(request.args.get('s1', 12)), int(request.args.get('p1', 20))
@@ -198,15 +215,15 @@ def teste_preditivo():
         s1, p1, s2, p2, s3, p3, s4, p4, perc_pressao = 12, 20, 11, 30, 10, 30, 9, 20, 60
 
     corte_z = request.args.get('z', default=2.0, type=float)
-    
-    print(f"--- MOTOR PREDITIVO V5.4 (Fixed Colors) ---")
-    
+
+    print(f"--- MOTOR PREDITIVO V5.4 (Fixed Colors) - Execução iniciada pelo usuário ---")
+
     # --- Dados ---
     df = carregar_todos_resultados(DB_PATH)
     predicao = gerar_perfil_preditivo_completo(df)
     perfil_alvo_raw = extrair_perfil_alvo_completo(predicao, top_n_quadrantes=15)
     ultimo_sorteio = list(predicao['ultimo_sorteio'])
-    
+
     # Monta Gabarito com Limites
     gabarito = {}
     for k in perfil_alvo_raw:
@@ -512,7 +529,7 @@ def teste_preditivo():
     </style>
            
     <div class="container">
-        <h1>🎯 Radar Preditivo V5.4 <span style="font-weight:normal; font-size:0.5em; color:#777;">Professional Fixed</span></h1>
+        <h1>🎯 Radar Preditivo V5.4 <span style="font-weight:normal; font-size:0.5em; color:#777;"></span></h1>
         {html_form}
         
         <div class="layout-grid">

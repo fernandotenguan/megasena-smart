@@ -1,0 +1,320 @@
+('C:\\Users\\ferna\\Desktop\\IA '
+ 'Project\\megasena-smart\\build\\run_update_and_serve\\run_update_and_serve.pkg',
+ {'BINARY': True,
+  'DATA': True,
+  'EXECUTABLE': True,
+  'EXTENSION': True,
+  'PYMODULE': True,
+  'PYSOURCE': True,
+  'PYZ': False,
+  'SPLASH': True,
+  'SYMLINK': False},
+ [('pyi-contents-directory _internal', '', 'OPTION'),
+  ('PYZ-00.pyz',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\build\\run_update_and_serve\\PYZ-00.pyz',
+   'PYZ'),
+  ('struct',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\build\\run_update_and_serve\\localpycs\\struct.pyc',
+   'PYMODULE'),
+  ('pyimod01_archive',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\build\\run_update_and_serve\\localpycs\\pyimod01_archive.pyc',
+   'PYMODULE'),
+  ('pyimod02_importers',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\build\\run_update_and_serve\\localpycs\\pyimod02_importers.pyc',
+   'PYMODULE'),
+  ('pyimod03_ctypes',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\build\\run_update_and_serve\\localpycs\\pyimod03_ctypes.pyc',
+   'PYMODULE'),
+  ('pyimod04_pywin32',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\build\\run_update_and_serve\\localpycs\\pyimod04_pywin32.pyc',
+   'PYMODULE'),
+  ('pyiboot01_bootstrap',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\venv\\Lib\\site-packages\\PyInstaller\\loader\\pyiboot01_bootstrap.py',
+   'PYSOURCE'),
+  ('pyi_rth_inspect',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\venv\\Lib\\site-packages\\PyInstaller\\hooks\\rthooks\\pyi_rth_inspect.py',
+   'PYSOURCE'),
+  ('run_update_and_serve',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\scripts\\run_update_and_serve.py',
+   'PYSOURCE'),
+  ('python312.dll',
+   'C:\\Users\\ferna\\AppData\\Local\\Programs\\Python\\Python312\\python312.dll',
+   'BINARY'),
+  ('_decimal.pyd',
+   'C:\\Users\\ferna\\AppData\\Local\\Programs\\Python\\Python312\\DLLs\\_decimal.pyd',
+   'EXTENSION'),
+  ('_hashlib.pyd',
+   'C:\\Users\\ferna\\AppData\\Local\\Programs\\Python\\Python312\\DLLs\\_hashlib.pyd',
+   'EXTENSION'),
+  ('unicodedata.pyd',
+   'C:\\Users\\ferna\\AppData\\Local\\Programs\\Python\\Python312\\DLLs\\unicodedata.pyd',
+   'EXTENSION'),
+  ('_lzma.pyd',
+   'C:\\Users\\ferna\\AppData\\Local\\Programs\\Python\\Python312\\DLLs\\_lzma.pyd',
+   'EXTENSION'),
+  ('_bz2.pyd',
+   'C:\\Users\\ferna\\AppData\\Local\\Programs\\Python\\Python312\\DLLs\\_bz2.pyd',
+   'EXTENSION'),
+  ('select.pyd',
+   'C:\\Users\\ferna\\AppData\\Local\\Programs\\Python\\Python312\\DLLs\\select.pyd',
+   'EXTENSION'),
+  ('_socket.pyd',
+   'C:\\Users\\ferna\\AppData\\Local\\Programs\\Python\\Python312\\DLLs\\_socket.pyd',
+   'EXTENSION'),
+  ('VCRUNTIME140.dll',
+   'C:\\Users\\ferna\\AppData\\Local\\Programs\\Python\\Python312\\VCRUNTIME140.dll',
+   'BINARY'),
+  ('libcrypto-3.dll',
+   'C:\\Users\\ferna\\AppData\\Local\\Programs\\Python\\Python312\\DLLs\\libcrypto-3.dll',
+   'BINARY'),
+  ('app\\__pycache__\\__init__.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\__pycache__\\__init__.cpython-312.pyc',
+   'DATA'),
+  ('app\\__pycache__\\database.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\__pycache__\\database.cpython-312.pyc',
+   'DATA'),
+  ('app\\__pycache__\\scraping.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\__pycache__\\scraping.cpython-312.pyc',
+   'DATA'),
+  ('app\\database.py',
+   'C:\\Users\\ferna\\Desktop\\IA Project\\megasena-smart\\app\\database.py',
+   'DATA'),
+  ('app\\indicadores\\__init__.py',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\__init__.py',
+   'DATA'),
+  ('app\\indicadores\\__pycache__\\__init__.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\__pycache__\\__init__.cpython-312.pyc',
+   'DATA'),
+  ('app\\indicadores\\__pycache__\\fibonacci.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\__pycache__\\fibonacci.cpython-312.pyc',
+   'DATA'),
+  ('app\\indicadores\\__pycache__\\finais.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\__pycache__\\finais.cpython-312.pyc',
+   'DATA'),
+  ('app\\indicadores\\__pycache__\\iniciais.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\__pycache__\\iniciais.cpython-312.pyc',
+   'DATA'),
+  ('app\\indicadores\\__pycache__\\multiplos3.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\__pycache__\\multiplos3.cpython-312.pyc',
+   'DATA'),
+  ('app\\indicadores\\__pycache__\\pares_impares.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\__pycache__\\pares_impares.cpython-312.pyc',
+   'DATA'),
+  ('app\\indicadores\\__pycache__\\primos.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\__pycache__\\primos.cpython-312.pyc',
+   'DATA'),
+  ('app\\indicadores\\__pycache__\\quadrantes.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\__pycache__\\quadrantes.cpython-312.pyc',
+   'DATA'),
+  ('app\\indicadores\\__pycache__\\repetidas_21.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\__pycache__\\repetidas_21.cpython-312.pyc',
+   'DATA'),
+  ('app\\indicadores\\__pycache__\\repetidas_39.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\__pycache__\\repetidas_39.cpython-312.pyc',
+   'DATA'),
+  ('app\\indicadores\\__pycache__\\repetidas_anteriores.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\__pycache__\\repetidas_anteriores.cpython-312.pyc',
+   'DATA'),
+  ('app\\indicadores\\__pycache__\\sequenciais.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\__pycache__\\sequenciais.cpython-312.pyc',
+   'DATA'),
+  ('app\\indicadores\\fibonacci.py',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\fibonacci.py',
+   'DATA'),
+  ('app\\indicadores\\finais.py',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\finais.py',
+   'DATA'),
+  ('app\\indicadores\\iniciais.py',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\iniciais.py',
+   'DATA'),
+  ('app\\indicadores\\multiplos3.py',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\multiplos3.py',
+   'DATA'),
+  ('app\\indicadores\\pares_impares.py',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\pares_impares.py',
+   'DATA'),
+  ('app\\indicadores\\primos.py',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\primos.py',
+   'DATA'),
+  ('app\\indicadores\\quadrantes.py',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\quadrantes.py',
+   'DATA'),
+  ('app\\indicadores\\repetidas_21.py',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\repetidas_21.py',
+   'DATA'),
+  ('app\\indicadores\\repetidas_39.py',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\repetidas_39.py',
+   'DATA'),
+  ('app\\indicadores\\repetidas_anteriores.py',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\repetidas_anteriores.py',
+   'DATA'),
+  ('app\\indicadores\\sequenciais.py',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\indicadores\\sequenciais.py',
+   'DATA'),
+  ('app\\quadrantes.csv',
+   'C:\\Users\\ferna\\Desktop\\IA Project\\megasena-smart\\app\\quadrantes.csv',
+   'DATA'),
+  ('app\\static\\css\\style.css',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\static\\css\\style.css',
+   'DATA'),
+  ('app\\static\\js\\app.js',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\static\\js\\app.js',
+   'DATA'),
+  ('app\\templates\\index.html',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\templates\\index.html',
+   'DATA'),
+  ('app\\templates\\navbar.html',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\templates\\navbar.html',
+   'DATA'),
+  ('app\\templates\\resultado_simulacao.html',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\templates\\resultado_simulacao.html',
+   'DATA'),
+  ('app\\templates\\similaridade.html',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\templates\\similaridade.html',
+   'DATA'),
+  ('app\\templates\\teste_preditivo.html',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\templates\\teste_preditivo.html',
+   'DATA'),
+  ('app\\util\\__pycache__\\analise_preditiva.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\util\\__pycache__\\analise_preditiva.cpython-312.pyc',
+   'DATA'),
+  ('app\\util\\__pycache__\\backtest.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\util\\__pycache__\\backtest.cpython-312.pyc',
+   'DATA'),
+  ('app\\util\\__pycache__\\config_mega.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\util\\__pycache__\\config_mega.cpython-312.pyc',
+   'DATA'),
+  ('app\\util\\__pycache__\\estatisticas.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\util\\__pycache__\\estatisticas.cpython-312.pyc',
+   'DATA'),
+  ('app\\util\\__pycache__\\gerador.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\util\\__pycache__\\gerador.cpython-312.pyc',
+   'DATA'),
+  ('app\\util\\__pycache__\\pontuacao.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\util\\__pycache__\\pontuacao.cpython-312.pyc',
+   'DATA'),
+  ('app\\util\\__pycache__\\quadrantes.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\util\\__pycache__\\quadrantes.cpython-312.pyc',
+   'DATA'),
+  ('app\\util\\__pycache__\\similarity.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\util\\__pycache__\\similarity.cpython-312.pyc',
+   'DATA'),
+  ('app\\util\\__pycache__\\simulation.cpython-312.pyc',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\util\\__pycache__\\simulation.cpython-312.pyc',
+   'DATA'),
+  ('app\\util\\analise_preditiva.py',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\util\\analise_preditiva.py',
+   'DATA'),
+  ('app\\util\\config_mega.py',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\util\\config_mega.py',
+   'DATA'),
+  ('app\\util\\estatisticas.py',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\util\\estatisticas.py',
+   'DATA'),
+  ('app\\util\\gerador.py',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\util\\gerador.py',
+   'DATA'),
+  ('app\\util\\pontuacao.py',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\util\\pontuacao.py',
+   'DATA'),
+  ('app\\util\\quadrantes.py',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\util\\quadrantes.py',
+   'DATA'),
+  ('app\\util\\similarity.py',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\util\\similarity.py',
+   'DATA'),
+  ('app\\util\\simulation.py',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\util\\simulation.py',
+   'DATA'),
+  ('templates\\index.html',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\templates\\index.html',
+   'DATA'),
+  ('templates\\navbar.html',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\templates\\navbar.html',
+   'DATA'),
+  ('templates\\resultado_simulacao.html',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\templates\\resultado_simulacao.html',
+   'DATA'),
+  ('templates\\similaridade.html',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\templates\\similaridade.html',
+   'DATA'),
+  ('templates\\teste_preditivo.html',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\app\\templates\\teste_preditivo.html',
+   'DATA'),
+  ('base_library.zip',
+   'C:\\Users\\ferna\\Desktop\\IA '
+   'Project\\megasena-smart\\build\\run_update_and_serve\\base_library.zip',
+   'DATA')],
+ 'python312.dll',
+ False,
+ False,
+ False,
+ [],
+ None,
+ None,
+ None)

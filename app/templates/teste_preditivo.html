@@ -1,0 +1,81 @@
+{% include 'navbar.html' %}
+
+<div class="container" style="padding-top:10px;">
+    <div class="card">
+        <h2 style="color:#209869; margin-top:0;">🎯 Radar Preditivo</h2>
+        <p style="color:#555;">Configure os parâmetros e clique em <strong>Processar</strong> para executar o motor preditivo.</p>
+
+        <form action="/teste-preditivo" method="get">
+            <input type="hidden" name="process" value="1">
+
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-top:12px;">
+                <div>
+                    <label for="qtd">Quantidade de jogos</label>
+                    <input id="qtd" name="qtd" type="number" value="{{ defaults.qtd }}" class="form-input">
+                </div>
+
+                <div>
+                    <label for="z">Corte Z</label>
+                    <input id="z" name="z" type="text" value="{{ defaults.z }}" class="form-input">
+                </div>
+
+                <div>
+                    <label for="pressao">Pressão (%)</label>
+                    <input id="pressao" name="pressao" type="number" value="{{ defaults.pressao }}" class="form-input">
+                </div>
+            </div>
+
+            <fieldset style="margin-top:12px; border:1px solid #eee; padding:10px; border-radius:8px;">
+                <legend style="padding:0 6px; color:#333; font-weight:600;">Filtros S / P (s1,p1 ... s4,p4)</legend>
+                <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap:10px; margin-top:8px;">
+                    <div>
+                        <label>S1</label>
+                        <input name="s1" type="number" value="{{ defaults.s1 }}" class="form-input">
+                    </div>
+                    <div>
+                        <label>P1</label>
+                        <input name="p1" type="number" value="{{ defaults.p1 }}" class="form-input">
+                    </div>
+                    <div>
+                        <label>S2</label>
+                        <input name="s2" type="number" value="{{ defaults.s2 }}" class="form-input">
+                    </div>
+                    <div>
+                        <label>P2</label>
+                        <input name="p2" type="number" value="{{ defaults.p2 }}" class="form-input">
+                    </div>
+                    <div>
+                        <label>S3</label>
+                        <input name="s3" type="number" value="{{ defaults.s3 }}" class="form-input">
+                    </div>
+                    <div>
+                        <label>P3</label>
+                        <input name="p3" type="number" value="{{ defaults.p3 }}" class="form-input">
+                    </div>
+                    <div>
+                        <label>S4</label>
+                        <input name="s4" type="number" value="{{ defaults.s4 }}" class="form-input">
+                    </div>
+                    <div>
+                        <label>P4</label>
+                        <input name="p4" type="number" value="{{ defaults.p4 }}" class="form-input">
+                    </div>
+                </div>
+            </fieldset>
+
+            <div style="margin-top:14px; display:flex; gap:10px; align-items:center;">
+                <button type="submit" class="primary-btn">Processar</button>
+                <a href="/" class="secondary-link">Voltar ao Painel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); max-width:900px; margin: 10px auto; }
+    .form-input { width:100%; padding:8px 10px; border:1px solid #e6e6e6; border-radius:6px; font-size:14px; }
+    .primary-btn { background:#209869; color:white; border:none; padding:10px 18px; border-radius:8px; font-weight:600; cursor:pointer; }
+    .primary-btn:hover { background:#18724f; }
+    .secondary-link { color:#209869; text-decoration:none; font-weight:600; }
+    .secondary-link:hover { text-decoration:underline; }
+</style>
