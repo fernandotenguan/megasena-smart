@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Similaridade e Validação</title>
+    <style>
+        body { font-family: 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; padding: 20px; color: #333; }
+        .container { max-width: 1400px; margin: 0 auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        
+        /* Stats Grid - Agora com todos indicadores */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 30px; }
+        .stat-card { background: #f9fbe7; border: 1px solid #c5e1a5; padding: 10px; border-radius: 6px; text-align: center; }
+        .stat-val { font-size: 1.1em; font-weight: bold; color: #33691e; margin-bottom: 4px; }
+        .stat-lbl { font-size: 0.75em; color: #558b2f; text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-card.main { background: #e8f5e9; border-color: #a5d6a7; transform: scale(1.05); z-index: 2; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9em; }
+        th { background: #37474f; color: white; padding: 12px 8px; text-align: left; }
+        td { padding: 8px; border-bottom: 1px solid #eee; }
+        tr:hover { background-color: #f1f8e9; }
+        
+        .tag-match { background: #c8e6c9; color: #1b5e20; border: 1px solid #a5d6a7; padding: 1px 5px; border-radius: 4px; font-size: 0.8em; margin: 1px; display: inline-block; }
+        .tag-miss { background: #ffebee; color: #c62828; padding: 1px 5px; border-radius: 4px; font-size: 0.8em; margin: 1px; display: inline-block; opacity: 0.7; }
+        
+        /* Modal & Form */
+        .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; backdrop-filter: blur(2px); }
+        .modal-content { background: white; margin: 50px auto; width: 90%; max-width: 1000px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); overflow: hidden; display: flex; flex-direction: column; max-height: 90vh; }
+        .modal-body { padding: 20px; overflow-y: auto; flex-grow: 1; }
+        .modal-header { background: #2e7d32; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Formulario Style (Copiado do Preditivo) */
+        .config-form { background:#e8f5e9; padding:15px; border-radius:8px; border: 1px solid #c8e6c9; display: flex; flex-wrap: wrap; gap: 15px; align-items: center; justify-content: center; }
+        .config-group { background:white; padding:5px 10px; border-radius:5px; border:1px solid #a5d6a7; text-align:center; }
+        .config-lbl { font-size:0.7em; font-weight:bold; color:#555; display: block; margin-bottom: 3px; }
+        .inp-sm { width:45px; text-align: center; border: 1px solid #ccc; border-radius: 3px; }
+        .btn-action { background:#2e7d32; color:white; border:none; padding:0 25px; height:45px; border-radius:4px; cursor:pointer; font-weight:bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+        .btn-action:hover { background:#1b5e20; }
+        .btn-simular-list { background: #1976d2; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size:0.85em; }
+    </style>
+    <script>
+        let concursoSelecionadoId = null;
+
+        function abrirConfiguracao(id) {
+            concursoSelecionadoId = id;
+            document.getElementById('modalConfig').style.display = 'block';
+            document.getElementById('displayConcId').innerText = id;
+            document.getElementById('resultadosContainer').innerHTML = ''; // Limpa anterior
+            document.getElementById('formConfig').style.display = 'flex'; // Mostra form
+        }
+
+        function rodarSimulacao(event) {
+            event.preventDefault();
+            if(!concursoSelecionadoId) return;
+
+            // Pega dados do form
+            const f = document.getElementById('formSimulacao');
+            const params = new URLSearchParams(new FormData(f));
+            params.append('cid', concursoSelecionadoId);
+
+            document.getElementById('formConfig').style.display = 'none';
+            document.getElementById('resultadosContainer').innerHTML = '<div style="text-align:center; padding:50px;"><h2 style="color:#2e7d32">🚀 Executando Motor V5 no Passado...</h2><p>Processando estatísticas da época, gerando jogos e validando...</p></div>';
+
+            fetch(`/simular-cenario?${params.toString()}`)
+                .then(r => r.text())
+                .then(html => {
+                    document.getElementById('resultadosContainer').innerHTML = html;
+                });
+        }
+    </script>
+</head>
+<body>
+    {% include 'navbar.html' %}
+    <div class="container">
+        <div style="margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:10px;">
+            <h2 style="color:#2e7d32; margin:0;">🧬 Similaridade Genética (Concurso {{ alvo.concurso }})</h2>
+            <p style="margin:5px 0 0 0; color:#666; font-size:0.9em;">Estes são os indicadores exatos do concurso alvo. A tabela abaixo busca momentos na história onde essa configuração ocorreu.</p>
+        </div>
+
+        <!-- TODOS OS INDICADORES -->
+        <div class="stats-grid">
+            <div class="stat-card main"><div class="stat-val">{{ alvo.pares }}</div><div class="stat-lbl">Pares</div></div>
+            <div class="stat-card main"><div class="stat-val">{{ alvo.faixa_soma }}</div><div class="stat-lbl">Soma</div></div>
+            <div class="stat-card"><div class="stat-val" style="font-family:monospace">{{ alvo.quadrantes }}</div><div class="stat-lbl">Quadrantes</div></div>
+            <div class="stat-card"><div class="stat-val">{{ alvo.faixa_deltas }}</div><div class="stat-lbl">Espalhamento</div></div>
+            <div class="stat-card"><div class="stat-val">{{ alvo.repetidas }}</div><div class="stat-lbl">Repetidas</div></div>
+            <div class="stat-card"><div class="stat-val">{{ alvo.linhas }}</div><div class="stat-lbl">Linhas</div></div>
+            <div class="stat-card"><div class="stat-val">{{ alvo.colunas }}</div><div class="stat-lbl">Colunas</div></div>
+            <div class="stat-card"><div class="stat-val">{{ alvo.primos }}</div><div class="stat-lbl">Primos</div></div>
+            <div class="stat-card"><div class="stat-val">{{ alvo.mult3 }}</div><div class="stat-lbl">Mult 3</div></div>
+            <div class="stat-card"><div class="stat-val">{{ alvo.faixa_t39 }}</div><div class="stat-lbl">Temp 39</div></div>
+            <div class="stat-card"><div class="stat-val">{{ alvo.faixa_t21 }}</div><div class="stat-lbl">Temp 21</div></div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th width="80">Conc</th>
+                    <th width="120">Similaridade</th>
+                    <th>DNA (Indicadores Iguais)</th>
+                    <th>Diferenças</th>
+                    <th>Resultado Seguinte</th>
+                    <th width="100">Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in similares %}
+                <tr>
+                    <td style="font-weight:bold; font-size:1.1em; color:#37474f;">{{ s.concurso }}</td>
+                    <td>
+                        <strong style="color:{{ '#2e7d32' if s.similaridade > 80 else '#f9a825' }}">{{ s.similaridade }}%</strong>
+                    </td>
+                    <td>
+                        {% for m in s.matches %}
+                        <span class="tag-match">{{ m }}</span>
+                        {% endfor %}
+                    </td>
+                    <td>
+                        <!-- Lógica visual simples para mostrar o que NÃO bateu -->
+                         {% if 'Pares' not in s.matches %}<span class="tag-miss">Pares: {{ s.assinatura.pares }}</span>{% endif %}
+                         {% if 'Primos' not in s.matches %}<span class="tag-miss">Pr: {{ s.assinatura.primos }}</span>{% endif %}
+                         {% if 'Mult 3' not in s.matches %}<span class="tag-miss">M3: {{ s.assinatura.mult3 }}</span>{% endif %}
+                         {% if 'Soma' not in s.matches %}<span class="tag-miss">Soma: {{ s.assinatura.faixa_soma }}</span>{% endif %}
+                         {% if 'Repetidas' not in s.matches %}<span class="tag-miss">Rep: {{ s.assinatura.repetidas }}</span>{% endif %}
+                    </td>
+                    <td>
+                        <div style="font-size:0.75em; color:#888;">Conc {{ s.concurso_futuro }}</div>
+                        <div style="font-weight:bold; color:#0277bd; font-size:0.9em;">{{ s.res_futuro }}</div>
+                    </td>
+                    <td>
+                        <button class="btn-simular-list" onclick="abrirConfiguracao({{ s.concurso }})">🧪 Validar</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- MODAL DE CONFIGURAÇÃO E RESULTADO -->
+    <div id="modalConfig" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span>Configurar Simulação para Concurso <strong>#<span id="displayConcId"></span></strong></span>
+                <span onclick="document.getElementById('modalConfig').style.display='none'" style="cursor:pointer; font-size:1.5em;">&times;</span>
+            </div>
+            <div class="modal-body">
+                
+                <!-- FORMULÁRIO VERDE (Exatamente como pedido) -->
+                <div id="formConfig" class="config-form">
+                    <form id="formSimulacao" onsubmit="rodarSimulacao(event)" style="display:contents;">
+                        <div style="text-align:center;">
+                            <label class="config-lbl">Qtd Jogos</label>
+                            <input type="number" name="qtd" value="100" style="width:60px; padding:5px; text-align:center; border:1px solid #ccc; border-radius:4px; font-weight:bold;">
+                        </div>
+                        
+                        <div class="config-group">
+                            <label class="config-lbl">Meta 1</label>
+                            Scr:<input type="number" name="s1" value="12" class="inp-sm"> Vol:<input type="number" name="p1" value="20" class="inp-sm">%
+                        </div>
+                        <div class="config-group">
+                            <label class="config-lbl">Meta 2</label>
+                            Scr:<input type="number" name="s2" value="11" class="inp-sm"> Vol:<input type="number" name="p2" value="30" class="inp-sm">%
+                        </div>
+                        <div class="config-group">
+                            <label class="config-lbl">Meta 3</label>
+                            Scr:<input type="number" name="s3" value="10" class="inp-sm"> Vol:<input type="number" name="p3" value="30" class="inp-sm">%
+                        </div>
+                        <div class="config-group">
+                            <label class="config-lbl">Meta 4</label>
+                            Scr:<input type="number" name="s4" value="9" class="inp-sm"> Vol:<input type="number" name="p4" value="20" class="inp-sm">%
+                        </div>
+                        
+                        <div style="text-align:center;">
+                            <label class="config-lbl" style="color:#d32f2f;">Pressão %</label>
+                            <input type="number" name="pressao" value="60" style="width:60px; padding:5px; text-align:center; border:1px solid #ccc; border-radius:4px;">
+                        </div>
+                        
+                        <button type="submit" class="btn-action">PROCESSAR NO PASSADO</button>
+                    </form>
+                </div>
+
+                <!-- ÁREA DE RESULTADOS (Carregada via AJAX) -->
+                <div id="resultadosContainer" style="margin-top:20px;"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -30,7 +30,6 @@ createApp({
         .split(/[ ,]+/)
         .map((d) => parseInt(d))
         .filter((d) => !isNaN(d));
-      // Chama backend Flask passando os indicadores escolhidos e as dezenas
       const response = await fetch("/api/testar_indicadores", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
