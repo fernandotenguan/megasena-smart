@@ -181,30 +181,16 @@ def verificar_match(chave, valor, gabarito):
 
     return False
 
-# 4. ROTA DO TESTE PREDITIVO (CORRIGIDO)
+# 4. ROTA DO TESTE PREDITIVO (ATUALIZADA COM SELETOR DE MODELO)
 @app.route('/teste-preditivo')
 def teste_preditivo():
-    # Só executa o processamento pesado se o formulário for submetido com process=1
-    process = request.args.get('process', default=0, type=int)
-
-    if process != 1:
-        # Renderiza a página com o formulário; o usuário clicará em "Processar" para executar
-        # Valores padrão mostrados no formulário
-        defaults = {
-            'qtd': 100,
-            'z': 2.0,
-            's1': 12, 'p1': 20,
-            's2': 11, 'p2': 30,
-            's3': 10, 'p3': 30,
-            's4': 9,  'p4': 20,
-            'pressao': 60
-        }
-        return render_template('teste_preditivo.html', defaults=defaults)
-
     start_time = time.time()
-
-    # --- Inputs (quando process==1) ---
+    
+    # --- Inputs ---
     qtd_jogos = request.args.get('qtd', default=100, type=int)
+    # NOVO: Captura o modelo (F4 ou F5)
+    modelo_geracao = request.args.get('modelo', default='F4', type=str)
+    
     try:
         s1, p1 = int(request.args.get('s1', 12)), int(request.args.get('p1', 20))
         s2, p2 = int(request.args.get('s2', 11)), int(request.args.get('p2', 30))
@@ -215,25 +201,32 @@ def teste_preditivo():
         s1, p1, s2, p2, s3, p3, s4, p4, perc_pressao = 12, 20, 11, 30, 10, 30, 9, 20, 60
 
     corte_z = request.args.get('z', default=2.0, type=float)
-
-    print(f"--- MOTOR PREDITIVO V5.4 (Fixed Colors) - Execução iniciada pelo usuário ---")
-
+    
+    print(f"--- MOTOR PREDITIVO V5.5 (Modelo {modelo_geracao}) ---")
+    
     # --- Dados ---
     df = carregar_todos_resultados(DB_PATH)
     predicao = gerar_perfil_preditivo_completo(df)
     perfil_alvo_raw = extrair_perfil_alvo_completo(predicao, top_n_quadrantes=15)
     ultimo_sorteio = list(predicao['ultimo_sorteio'])
-
-    # Monta Gabarito com Limites
+    
+    # Monta Gabarito
     gabarito = {}
     for k in perfil_alvo_raw:
         gabarito[k] = {'alvo': perfil_alvo_raw[k]}
         if k in predicao and 'limites' in predicao[k]:
             gabarito[k]['limites'] = predicao[k]['limites']
 
-    # Geração
+    # --- GERAÇÃO (Atualizado) ---
     qtd_candidatos_brutos = 300000
-    pool = gerar_universo_filtrado(qtd_candidatos_brutos, ultimo_sorteio)
+    
+    # Passa o modelo e o mapa de scores para a geração inteligente
+    pool = gerar_universo_filtrado(
+        qtd_candidatos_brutos, 
+        ultimo_sorteio, 
+        mapa_scores=predicao['mapa_39'], 
+        modelo=modelo_geracao
+    )
     
     # Pontuação
     baldes = defaultdict(list)
@@ -304,11 +297,22 @@ def teste_preditivo():
     
     html_form = f"""
     <form action="/teste-preditivo" method="get" style="background:#e8f5e9; padding:15px; border-radius:8px; margin-bottom:20px; border: 1px solid #c8e6c9; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
-        <div style="display:flex; gap:15px; flex-wrap:wrap; align-items:center;">
+        <div style="display:flex; gap:15px; flex-wrap:wrap; align-items:center; justify-content:center;">
+            
+            <!-- SELETOR DE MODELO NOVO -->
+            <div style="text-align:center; background:white; padding:5px; border-radius:5px; border:1px solid #a5d6a7;">
+                <label style="font-weight:bold; font-size:0.7em; color:#1b5e20; display:block; margin-bottom:2px;">Modelo</label>
+                <select name="modelo" style="padding:4px; border:1px solid #ccc; border-radius:4px; font-weight:bold; color:#333;">
+                    <option value="F4" {'selected' if modelo_geracao=='F4' else ''}>F4 - Quadra (Espalhado)</option>
+                    <option value="F5" {'selected' if modelo_geracao=='F5' else ''}>F5 - Quina (Denso)</option>
+                </select>
+            </div>
+
             <div style="text-align:center;">
                 <label style="font-weight:bold; font-size:0.8em; color:#1b5e20;">Qtd</label><br>
                 <input type="number" name="qtd" value="{qtd_jogos}" style="width:60px; padding:5px; text-align:center; border:1px solid #ccc; border-radius:4px;">
             </div>
+            
             <div style="background:white; padding:5px 10px; border-radius:5px; border:1px solid #a5d6a7; text-align:center;">
                 <label style="font-size:0.7em; font-weight:bold; color:#555;">Meta 1</label><br>
                 Scr:<input type="number" name="s1" value="{s1}" style="width:45px;"> Vol:<input type="number" name="p1" value="{p1}" style="width:45px;">%
@@ -463,7 +467,6 @@ def teste_preditivo():
             h += f'<div class="bola-mapa" style="background:{bg}; color:{color}; border:{border};"><b style="font-size:1.8em;">{d:02d}</b><span style="font-size:1.2em">{qtd}</span></div>'
         return h + '</div>'
     
-    # DEFINIÇÃO DO MENU PREDITIVO
     html_menu = """
         <style>
             body { margin:0; padding:0; box-sizing: border-box; } 
@@ -481,17 +484,15 @@ def teste_preditivo():
                     <a href="/" class="nav-btn">📊 Painel Indicadores</a>
                     <a href="/teste-preditivo" class="nav-btn" style="background:white; color:#1b5e20; font-weight:bold;">🎯 Radar Preditivo</a>
                     <a href="/analise-similaridade" class="nav-btn">🧬 Similaridade Genética</a>
-                    <a href="/backtest" class="nav-btn">🧪 Backtest</a>
                 </div>
             </div>
         </nav>
         """
 
-    # MONTAGEM FINAL (Corrigido: Adiciona menu no início e ajusta CSS)
     full_html = f"""
     {html_menu}
     <style>
-        body {{ font-family: 'Segoe UI', Roboto, Helvetica, sans-serif; background: #f0f2f5; color: #333; }}
+        body {{ font-family: 'Segoe UI', Roboto, Helvetica, sans-serif; padding: 20px; background: #f0f2f5; color: #333; }}
         .container {{ max-width: 1600px; margin: auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 2px 15px rgba(0,0,0,0.08); }}
         h1 {{ color: #2e7d32; margin-bottom: 15px; font-weight:800; letter-spacing: -0.5px; }}
         
@@ -529,7 +530,7 @@ def teste_preditivo():
     </style>
            
     <div class="container">
-        <h1>🎯 Radar Preditivo V5.4 <span style="font-weight:normal; font-size:0.5em; color:#777;"></span></h1>
+        <h1>🎯 Radar Preditivo V5.5 <span style="font-weight:normal; font-size:0.5em; color:#777;">Professional Fixed</span></h1>
         {html_form}
         
         <div class="layout-grid">
@@ -642,6 +643,28 @@ def simular_cenario_route():
     res = simular_cenario_passado(df, cid, params)
     
     return render_template('resultado_simulacao.html', res=res)
+
+@app.route('/simular-lote', methods=['POST'])
+def simular_lote():
+    dados = request.get_json()
+    ids = dados.get('ids', [])
+    params_form = dados.get('params', {})
+    
+    params = {
+        'qtd': int(params_form.get('qtd', 100)),
+        'modelo': params_form.get('modelo', 'F4'), # Captura modelo
+        's1': int(params_form.get('s1', 12)), 'p1': int(params_form.get('p1', 20)),
+        's2': int(params_form.get('s2', 11)), 'p2': int(params_form.get('p2', 30)),
+        's3': int(params_form.get('s3', 10)), 'p3': int(params_form.get('p3', 30)),
+        's4': int(params_form.get('s4', 9)),  'p4': int(params_form.get('p4', 20)),
+        'pressao': int(params_form.get('pressao', 60))
+    }
+    
+    df = carregar_todos_resultados(DB_PATH)
+    from app.util.simulation import simular_lote_cenarios
+    
+    resultados = simular_lote_cenarios(df, ids, params)
+    return render_template('partial_lote_results.html', resultados=resultados)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -39,9 +39,16 @@ def simular_cenario_passado(df_completo, concurso_simulacao_id, params):
         if 'limites' in predicao.get(k, {}):
             gabarito[k]['limites'] = predicao[k]['limites']
 
-    # 3. GERAÇÃO (Pool)
-    # Aumentei para 50k para ter margem para os filtros
-    candidatos = gerar_universo_filtrado(300000, ultimo_sorteio)
+    # 3. GERAÇÃO (Universo Completo - Fidelidade ao Preditivo)
+    qtd_universo = 300000
+    modelo_selecionado = params.get('modelo', 'F4') # Pega do params
+    
+    candidatos = gerar_universo_filtrado(
+        qtd_universo, 
+        ultimo_sorteio, 
+        mapa_scores=predicao['mapa_39'], # Passa o mapa!
+        modelo=modelo_selecionado        # Passa o modelo!
+    )
     
     # 4. PONTUAÇÃO E SELEÇÃO (Lógica Fiel ao Modelo V5)
     mapa39 = predicao['mapa_39']
@@ -150,3 +157,27 @@ def simular_cenario_passado(df_completo, concurso_simulacao_id, params):
         'tempo': round(time.time() - start_time, 2),
         'max_score_epoca': max_score_found
     }
+
+def simular_lote_cenarios(df_completo, lista_ids, params):
+    """
+    Executa a simulação para uma lista de IDs de concurso.
+    Retorna um resumo agregado.
+    """
+    resultados = []
+    
+    for cid in lista_ids:
+        try:
+            res = simular_cenario_passado(df_completo, int(cid), params)
+            if 'erro' not in res:
+                # Simplifica o objeto para o resumo
+                resultados.append({
+                    'base': res['concurso_base'],
+                    'alvo': res['concurso_validacao'],
+                    'real': res['resultado_real'],
+                    'acertos': res['resumo'], # {0:x, ... 4:y, 5:z, 6:w}
+                    'max_score': res['max_score_epoca']
+                })
+        except Exception as e:
+            print(f"Erro ao simular {cid}: {e}")
+            
+    return resultados

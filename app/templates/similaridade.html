@@ -7,28 +7,54 @@
         body { font-family: 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; padding: 20px; color: #333; }
         .container { max-width: 1400px; margin: 0 auto; background: white; padding: 25px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
         
-        /* Stats Grid - Agora com todos indicadores */
+        /* Stats Grid */
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 30px; }
         .stat-card { background: #f9fbe7; border: 1px solid #c5e1a5; padding: 10px; border-radius: 6px; text-align: center; }
         .stat-val { font-size: 1.1em; font-weight: bold; color: #33691e; margin-bottom: 4px; }
         .stat-lbl { font-size: 0.75em; color: #558b2f; text-transform: uppercase; letter-spacing: 0.5px; }
         .stat-card.main { background: #e8f5e9; border-color: #a5d6a7; transform: scale(1.05); z-index: 2; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         
+        /* Table Styles */
         table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9em; }
-        th { background: #37474f; color: white; padding: 12px 8px; text-align: left; }
-        td { padding: 8px; border-bottom: 1px solid #eee; }
+        th { background: #37474f; color: white; padding: 12px 8px; text-align: left; vertical-align: middle;}
+        td { padding: 8px; border-bottom: 1px solid #eee; vertical-align: middle; }
         tr:hover { background-color: #f1f8e9; }
         
+        /* Tags */
         .tag-match { background: #c8e6c9; color: #1b5e20; border: 1px solid #a5d6a7; padding: 1px 5px; border-radius: 4px; font-size: 0.8em; margin: 1px; display: inline-block; }
         .tag-miss { background: #ffebee; color: #c62828; padding: 1px 5px; border-radius: 4px; font-size: 0.8em; margin: 1px; display: inline-block; opacity: 0.7; }
         
+        /* Checkbox Customizado */
+        .check-wrapper { display: flex; align-items: center; justify-content: center; }
+        .chk-concurso { width: 18px; height: 18px; cursor: pointer; accent-color: #2e7d32; }
+        
+        /* Barra flutuante de ação */
+        .floating-action {
+            position: fixed; bottom: 30px; right: 30px;
+            background: #fff; padding: 15px 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+            border-radius: 50px; border: 2px solid #2e7d32;
+            display: none; align-items: center; gap: 15px; z-index: 999;
+            animation: slideUp 0.3s ease-out;
+        }
+        @keyframes slideUp { from { transform: translateY(100px); } to { transform: translateY(0); } }
+        
+        .btn-lote {
+            background: #2e7d32; color: white; border: none;
+            padding: 10px 25px; border-radius: 25px;
+            font-weight: bold; cursor: pointer; font-size: 0.9em;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: background 0.2s;
+        }
+        .btn-lote:hover { background: #1b5e20; }
+
         /* Modal & Form */
         .modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:1000; backdrop-filter: blur(2px); }
         .modal-content { background: white; margin: 50px auto; width: 90%; max-width: 1000px; border-radius: 10px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); overflow: hidden; display: flex; flex-direction: column; max-height: 90vh; }
         .modal-body { padding: 20px; overflow-y: auto; flex-grow: 1; }
         .modal-header { background: #2e7d32; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
         
-        /* Formulario Style (Copiado do Preditivo) */
+        /* Formulario Style */
         .config-form { background:#e8f5e9; padding:15px; border-radius:8px; border: 1px solid #c8e6c9; display: flex; flex-wrap: wrap; gap: 15px; align-items: center; justify-content: center; }
         .config-group { background:white; padding:5px 10px; border-radius:5px; border:1px solid #a5d6a7; text-align:center; }
         .config-lbl { font-size:0.7em; font-weight:bold; color:#555; display: block; margin-bottom: 3px; }
@@ -40,25 +66,42 @@
     <script>
         let concursoSelecionadoId = null;
 
+        // --- LÓGICA DE CHECKBOX ---
+        function toggleSelection() {
+            const checkboxes = document.querySelectorAll('.chk-concurso:checked');
+            const floatBar = document.getElementById('floatingBar');
+            const countSpan = document.getElementById('countSel');
+            
+            if (checkboxes.length > 0) {
+                floatBar.style.display = 'flex';
+                countSpan.innerText = checkboxes.length;
+            } else {
+                floatBar.style.display = 'none';
+            }
+        }
+
+        // --- MODO ÚNICO ---
         function abrirConfiguracao(id) {
             concursoSelecionadoId = id;
             document.getElementById('modalConfig').style.display = 'block';
             document.getElementById('displayConcId').innerText = id;
-            document.getElementById('resultadosContainer').innerHTML = ''; // Limpa anterior
-            document.getElementById('formConfig').style.display = 'flex'; // Mostra form
+            document.getElementById('resultadosContainer').innerHTML = ''; 
+            document.getElementById('formConfig').style.display = 'flex'; 
+            
+            // Reseta para envio normal (único)
+            const form = document.getElementById('formSimulacao');
+            form.onsubmit = rodarSimulacaoUnica;
         }
 
-        function rodarSimulacao(event) {
+        function rodarSimulacaoUnica(event) {
             event.preventDefault();
             if(!concursoSelecionadoId) return;
 
-            // Pega dados do form
             const f = document.getElementById('formSimulacao');
             const params = new URLSearchParams(new FormData(f));
             params.append('cid', concursoSelecionadoId);
 
-            document.getElementById('formConfig').style.display = 'none';
-            document.getElementById('resultadosContainer').innerHTML = '<div style="text-align:center; padding:50px;"><h2 style="color:#2e7d32">🚀 Executando Motor V5 no Passado...</h2><p>Processando estatísticas da época, gerando jogos e validando...</p></div>';
+            iniciarProcessamentoUI();
 
             fetch(`/simular-cenario?${params.toString()}`)
                 .then(r => r.text())
@@ -66,17 +109,60 @@
                     document.getElementById('resultadosContainer').innerHTML = html;
                 });
         }
+
+        // --- MODO LOTE (BATCH) ---
+        function abrirConfiguracaoLote() {
+            document.getElementById('modalConfig').style.display = 'block';
+            document.getElementById('displayConcId').innerText = "LOTE SELECIONADO";
+            document.getElementById('resultadosContainer').innerHTML = '';
+            document.getElementById('formConfig').style.display = 'flex';
+            
+            // Altera o comportamento do submit para Batch
+            const form = document.getElementById('formSimulacao');
+            form.onsubmit = rodarSimulacaoLote;
+        }
+
+        function rodarSimulacaoLote(event) {
+            event.preventDefault();
+            
+            // Coleta IDs marcados
+            const checkboxes = document.querySelectorAll('.chk-concurso:checked');
+            const ids = Array.from(checkboxes).map(cb => parseInt(cb.value));
+            
+            // Coleta Form
+            const f = document.getElementById('formSimulacao');
+            const formData = new FormData(f);
+            const params = Object.fromEntries(formData.entries());
+
+            iniciarProcessamentoUI("🚀 Processando Lote...", "Isso pode levar alguns minutos. Estamos gerando universos estatísticos únicos para cada cenário.");
+
+            fetch('/simular-lote', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ids: ids, params: params })
+            })
+            .then(r => r.text())
+            .then(html => {
+                document.getElementById('resultadosContainer').innerHTML = html;
+            });
+        }
+
+        function iniciarProcessamentoUI(titulo="🚀 Executando Motor V5...", msg="Processando estatísticas da época, gerando jogos e validando...") {
+            document.getElementById('formConfig').style.display = 'none';
+            document.getElementById('resultadosContainer').innerHTML = `<div style="text-align:center; padding:50px;"><h2 style="color:#2e7d32">${titulo}</h2><p>${msg}</p></div>`;
+        }
     </script>
 </head>
 <body>
     {% include 'navbar.html' %}
+
     <div class="container">
         <div style="margin-bottom:20px; border-bottom:1px solid #eee; padding-bottom:10px;">
             <h2 style="color:#2e7d32; margin:0;">🧬 Similaridade Genética (Concurso {{ alvo.concurso }})</h2>
-            <p style="margin:5px 0 0 0; color:#666; font-size:0.9em;">Estes são os indicadores exatos do concurso alvo. A tabela abaixo busca momentos na história onde essa configuração ocorreu.</p>
+            <p style="margin:5px 0 0 0; color:#666; font-size:0.9em;">Perfil estatístico do alvo. Selecione concursos passados para validar o modelo em lote.</p>
         </div>
 
-        <!-- TODOS OS INDICADORES -->
+        <!-- INDICADORES ALVO -->
         <div class="stats-grid">
             <div class="stat-card main"><div class="stat-val">{{ alvo.pares }}</div><div class="stat-lbl">Pares</div></div>
             <div class="stat-card main"><div class="stat-val">{{ alvo.faixa_soma }}</div><div class="stat-lbl">Soma</div></div>
@@ -94,40 +180,58 @@
         <table>
             <thead>
                 <tr>
-                    <th width="80">Conc</th>
-                    <th width="120">Similaridade</th>
-                    <th>DNA (Indicadores Iguais)</th>
-                    <th>Diferenças</th>
-                    <th>Resultado Seguinte</th>
-                    <th width="100">Ação</th>
+                    <th width="50" style="text-align:center;">Select</th> <!-- Coluna 1 -->
+                    <th width="80">Conc</th>                              <!-- Coluna 2 -->
+                    <th width="120">Similaridade</th>                     <!-- Coluna 3 -->
+                    <th>DNA (Indicadores Iguais)</th>                     <!-- Coluna 4 -->
+                    <th>Diferenças</th>                                   <!-- Coluna 5 -->
+                    <th>Resultado Seguinte</th>                           <!-- Coluna 6 -->
+                    <th width="100" style="text-align:center;">Ação</th>  <!-- Coluna 7 -->
                 </tr>
             </thead>
             <tbody>
                 {% for s in similares %}
                 <tr>
+                    <!-- CÉLULA 1: Checkbox -->
+                    <td style="text-align:center;">
+                        <div class="check-wrapper">
+                            <input type="checkbox" class="chk-concurso" value="{{ s.concurso }}" onchange="toggleSelection()">
+                        </div>
+                    </td>
+                    
+                    <!-- CÉLULA 2: Concurso -->
                     <td style="font-weight:bold; font-size:1.1em; color:#37474f;">{{ s.concurso }}</td>
+                    
+                    <!-- CÉLULA 3: Similaridade -->
                     <td>
                         <strong style="color:{{ '#2e7d32' if s.similaridade > 80 else '#f9a825' }}">{{ s.similaridade }}%</strong>
                     </td>
+                    
+                    <!-- CÉLULA 4: Matches -->
                     <td>
                         {% for m in s.matches %}
                         <span class="tag-match">{{ m }}</span>
                         {% endfor %}
                     </td>
+                    
+                    <!-- CÉLULA 5: Misses -->
                     <td>
-                        <!-- Lógica visual simples para mostrar o que NÃO bateu -->
-                         {% if 'Pares' not in s.matches %}<span class="tag-miss">Pares: {{ s.assinatura.pares }}</span>{% endif %}
+                         {% if 'Pares' not in s.matches %}<span class="tag-miss">P: {{ s.assinatura.pares }}</span>{% endif %}
+                         {% if 'Soma' not in s.matches %}<span class="tag-miss">S: {{ s.assinatura.faixa_soma }}</span>{% endif %}
                          {% if 'Primos' not in s.matches %}<span class="tag-miss">Pr: {{ s.assinatura.primos }}</span>{% endif %}
                          {% if 'Mult 3' not in s.matches %}<span class="tag-miss">M3: {{ s.assinatura.mult3 }}</span>{% endif %}
-                         {% if 'Soma' not in s.matches %}<span class="tag-miss">Soma: {{ s.assinatura.faixa_soma }}</span>{% endif %}
-                         {% if 'Repetidas' not in s.matches %}<span class="tag-miss">Rep: {{ s.assinatura.repetidas }}</span>{% endif %}
+                         {% if 'Repetidas' not in s.matches %}<span class="tag-miss">R: {{ s.assinatura.repetidas }}</span>{% endif %}
                     </td>
+                    
+                    <!-- CÉLULA 6: Resultado Futuro -->
                     <td>
                         <div style="font-size:0.75em; color:#888;">Conc {{ s.concurso_futuro }}</div>
                         <div style="font-weight:bold; color:#0277bd; font-size:0.9em;">{{ s.res_futuro }}</div>
                     </td>
-                    <td>
-                        <button class="btn-simular-list" onclick="abrirConfiguracao({{ s.concurso }})">🧪 Validar</button>
+                    
+                    <!-- CÉLULA 7: Botão Validar -->
+                    <td style="text-align:center;">
+                        <button class="btn-simular-list" onclick="abrirConfiguracao({{ s.concurso }})">Validar</button>
                     </td>
                 </tr>
                 {% endfor %}
@@ -135,18 +239,36 @@
         </table>
     </div>
 
-    <!-- MODAL DE CONFIGURAÇÃO E RESULTADO -->
+    <!-- BARRA FLUTUANTE DE LOTE -->
+    <div id="floatingBar" class="floating-action">
+        <div>
+            <span style="font-weight:bold; font-size:1.1em; color:#2e7d32;" id="countSel">0</span> cenários selecionados
+        </div>
+        <button class="btn-lote" onclick="abrirConfiguracaoLote()">PROCESSAR LOTE</button>
+    </div>
+
+    <!-- MODAL CONFIG -->
     <div id="modalConfig" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <span>Configurar Simulação para Concurso <strong>#<span id="displayConcId"></span></strong></span>
+                <span>Configurar Simulação: <strong><span id="displayConcId"></span></strong></span>
                 <span onclick="document.getElementById('modalConfig').style.display='none'" style="cursor:pointer; font-size:1.5em;">&times;</span>
             </div>
             <div class="modal-body">
                 
-                <!-- FORMULÁRIO VERDE (Exatamente como pedido) -->
+                <!-- FORMULÁRIO -->
                 <div id="formConfig" class="config-form">
-                    <form id="formSimulacao" onsubmit="rodarSimulacao(event)" style="display:contents;">
+                    <form id="formSimulacao" style="display:contents;">
+                        
+                        <!-- NOVO SELETOR DE MODELO -->
+                        <div style="text-align:center; background:white; padding:5px; border-radius:5px; border:1px solid #a5d6a7;">
+                            <label class="config-lbl" style="color:#1b5e20;">Modelo</label>
+                            <select name="modelo" style="padding:4px; border:1px solid #ccc; border-radius:4px; font-weight:bold; color:#333;">
+                                <option value="F4" selected>F4 - Quadra</option>
+                                <option value="F5">F5 - Quina</option>
+                            </select>
+                        </div>
+
                         <div style="text-align:center;">
                             <label class="config-lbl">Qtd Jogos</label>
                             <input type="number" name="qtd" value="100" style="width:60px; padding:5px; text-align:center; border:1px solid #ccc; border-radius:4px; font-weight:bold;">
@@ -174,11 +296,11 @@
                             <input type="number" name="pressao" value="60" style="width:60px; padding:5px; text-align:center; border:1px solid #ccc; border-radius:4px;">
                         </div>
                         
-                        <button type="submit" class="btn-action">PROCESSAR NO PASSADO</button>
+                        <button type="submit" class="btn-action">PROCESSAR</button>
                     </form>
                 </div>
 
-                <!-- ÁREA DE RESULTADOS (Carregada via AJAX) -->
+                <!-- ÁREA DE RESULTADOS -->
                 <div id="resultadosContainer" style="margin-top:20px;"></div>
             </div>
         </div>

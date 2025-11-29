@@ -1,0 +1,36 @@
+<h3 style="color:#2e7d32; border-bottom:2px solid #eee; padding-bottom:10px;">📊 Relatório de Backtest em Lote</h3>
+
+<table style="width:100%; border-collapse:collapse; margin-top:10px;">
+    <thead>
+        <tr style="background:#37474f; color:white;">
+            <th style="padding:10px;">Base</th>
+            <th style="padding:10px;">Alvo</th>
+            <th style="padding:10px;">Sena</th>
+            <th style="padding:10px;">Quina</th>
+            <th style="padding:10px;">Quadra</th>
+            <th style="padding:10px;">Resultado Real</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for r in resultados %}
+        <tr style="border-bottom:1px solid #eee; text-align:center; background: {{ '#e8f5e9' if r.acertos[4] > 0 or r.acertos[5] > 0 else 'white' }}">
+            <td style="padding:8px; font-weight:bold; color:#555;">{{ r.base }}</td>
+            <td style="padding:8px; font-weight:bold; color:#1976d2;">{{ r.alvo }}</td>
+            
+            <td style="padding:8px; font-weight:bold; color:{{ '#2e7d32' if r.acertos[6]>0 else '#ccc' }}">{{ r.acertos[6] }}</td>
+            <td style="padding:8px; font-weight:bold; color:{{ '#2e7d32' if r.acertos[5]>0 else '#ccc' }}">{{ r.acertos[5] }}</td>
+            <td style="padding:8px; font-weight:bold; color:{{ '#43a047' if r.acertos[4]>0 else '#999' }}">{{ r.acertos[4] }}</td>
+            
+            <td style="padding:8px; font-size:0.85em; color:#555;">
+                {% for n in r.real %}
+                <span style="display:inline-block; padding:2px; border:1px solid #ddd; border-radius:3px; margin:1px;">{{ "%02d"|format(n) }}</span>
+                {% endfor %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div style="margin-top:20px; text-align:center; color:#666; font-size:0.9em;">
+    Total processado: <strong>{{ resultados|length }}</strong> concursos.
+</div>
